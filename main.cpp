@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <string>
+#include <array>
 using namespace std;
 
 class Character
@@ -35,6 +37,7 @@ class Hero : public Character
 {
 public:
     Hero() : Character(100, 15.5, 16) {}
+    int expirience;
 
     void attack(Character &target) override
     {
@@ -58,6 +61,8 @@ public:
             health += 15;
             speed += 6;
             strength += 5;
+
+            expirience += 50;
         }
     }
 
@@ -131,6 +136,20 @@ public:
         Character::walk(max_speed);
     }
 };
+
+class Item {
+protected:
+    array<int, 10> slot;
+    int sword;
+    int potion;
+    int bow;
+    int arrows;
+    int armor;
+public:
+    Item(array<int, 10> sl, int sw, int p, int b, int arr, int arm)
+    : slot(sl), sword(sw), potion(p), bow(b), arrows(arr), armor(arm) {}
+};
+
 
 int main()
 {
