@@ -3,6 +3,7 @@
   "cSpell.words": ["opperator"],
   "files.associations": {
     "format": "cpp",
-    "optional": "cpp"
+    "optional": "cpp",
+    "iostream": "cpp"
   }
 }
