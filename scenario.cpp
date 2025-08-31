@@ -57,21 +57,13 @@ void three_doors()
     cin >> door;
 
     if (door == '1')
-    {
         dragon();
-    }
     else if (door == '2')
-    {
         tournament();
-    }
     else if (door == '3')
-    {
         conspiracy_against_the_king();
-    }
     else
-    {
         cout << "There is no such door!" << endl;
-    }
 }
 
 int main()
@@ -111,6 +103,19 @@ void dragon()
             cout << "You survived the dragon fight!" << endl;
             hero.achievement = "Slayer of Dragons";
             hero.gold += 200;
+            cout << "But the dragon’s treasure is still here... do you:\n";
+            cout << "E - Take the treasure\nF - Leave quietly\n";
+            cin >> choice;
+            if (choice == 'E')
+            {
+                cout << "💰 You take 500 gold! But a trap injures you (-20 HP)." << endl;
+                hero.gold += 500;
+                hero.hp -= 20;
+            }
+            else
+            {
+                cout << "You leave, but your honor remains intact." << endl;
+            }
         }
     }
     else if (choice == 'C')
@@ -133,6 +138,17 @@ void dragon()
         {
             hero.achievement = "Dragon Rider";
             hero.gold += 300;
+            cout << "The dragon offers to fly you to the king’s castle. Do you accept? (Y/N)\n";
+            cin >> choice;
+            if (choice == 'Y')
+            {
+                cout << "🐲 You arrive as a Dragon Rider, the people fear and respect you." << endl;
+                hero.gold += 200;
+            }
+            else
+            {
+                cout << "You refuse and stay free, but miss an opportunity for power." << endl;
+            }
         }
     }
 }
@@ -152,6 +168,14 @@ void tournament()
             cout << "🏆 You won with honor! The king rewards you." << endl;
             hero.achievement = "Champion of the Kingdom";
             hero.gold += 150;
+            cout << "Final round! Will you fight the champion? (Y/N)\n";
+            cin >> choice;
+            if (choice == 'Y' && battle("Royal Champion", 90, 20))
+            {
+                cout << "👑 You became the Grand Champion!" << endl;
+                hero.achievement = "Grand Champion";
+                hero.gold += 300;
+            }
         }
     }
     else if (choice == 'B')
@@ -207,6 +231,18 @@ void conspiracy_against_the_king()
             cout << "The coup succeeds! You take power." << endl;
             hero.achievement = "Usurper King";
             hero.gold += 300;
+            cout << "Now the people demand justice. Do you rule with mercy (M) or fear (F)?\n";
+            cin >> choice;
+            if (choice == 'M')
+            {
+                cout << "You are loved by the people." << endl;
+                hero.gold += 100;
+            }
+            else
+            {
+                cout << "You are feared as a tyrant!" << endl;
+                hero.hp += 20;
+            }
         }
     }
     else if (choice == 'C')
@@ -214,6 +250,12 @@ void conspiracy_against_the_king()
         cout << "You decide to blackmail both sides." << endl;
         hero.achievement = "Master Manipulator";
         hero.gold += 200;
+        cout << "But the conspirators grow suspicious. Do you hide (H) or confront them (C)?\n";
+        cin >> choice;
+        if (choice == 'C' && battle("Angry Conspirators", 60, 12))
+        {
+            cout << "You killed them all and kept your gold." << endl;
+        }
     }
     else if (choice == 'D')
     {
