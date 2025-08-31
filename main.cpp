@@ -2,11 +2,12 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
-#include <array>
+#include <vector>
+#include <memory>
+
 using namespace std;
 
-class Character
-{
+class Character {
 protected:
     float health;
     float speed;
@@ -16,175 +17,176 @@ public:
     Character(float h, float s, float str) : health(h), speed(s), strength(str) {}
 
     virtual void attack(Character &target) = 0;
-    virtual void heal(float amount)
-    {
+
+    virtual void heal(float amount) {
         health += amount;
-        if (health > 100)
-            health = 100;
-        cout << "Healed for " << amount << ", health now " << health << endl;
+        if (health > 100) health = 100;
+        cout << "Healed for " << amount << ", health is now " << health << endl;
     }
-    virtual void walk(float max_speed)
-    {
-        if (speed > max_speed)
-            speed = max_speed;
+
+    virtual void walk(float max_speed) {
+        if (speed > max_speed) speed = max_speed;
         cout << "Walking with speed " << speed << endl;
     }
 
-    float getHealth() { return health; }
+    float getHealth() const { return health; }
 };
 
-class Hero : public Character
-{
+class Hero : public Character {
 public:
-    Hero() : Character(100, 15.5, 16) {}
-    int expirience;
+    int experience;
 
-    void attack(Character &target) override
-    {
+    Hero() : Character(100, 15.5, 16), experience(0) {}
+
+    void attack(Character &target) override {
         int chance = rand() % 100;
-        if (chance < 80)
-        {
+        if (chance < 80) {
             target.heal(-strength);
             cout << "Hero attacks! Target health: " << target.getHealth() << endl;
-        }
-        else
-        {
+        } else {
             cout << "Hero missed!" << endl;
         }
     }
 
-    void kill(Character &target)
-    {
-        if (target.getHealth() <= 0)
-        {
-            cout << "Enemy is killed" << endl;
+    void kill(Character &target) {
+        if (target.getHealth() <= 0) {
+            cout << "Enemy is killed!" << endl;
             health += 15;
             speed += 6;
             strength += 5;
-
-            expirience += 50;
+            experience += 50;
         }
-    }
-
-    void heal(float amount) override
-    {
-        Character::heal(amount);
-    }
-
-    void walk(float max_speed) override
-    {
-        Character::walk(max_speed);
     }
 };
 
-class Enemy : public Character
-{
+class Enemy : public Character {
 public:
     Enemy() : Character(50, 7, 5) {}
 
-    void attack(Character &target) override
-    {
+    void attack(Character &target) override {
         int chance = rand() % 100;
-        if (chance < 50)
-        {
+        if (chance < 50) {
             target.heal(-strength);
             cout << "Enemy attacks! Target health: " << target.getHealth() << endl;
-        }
-        else
-        {
+        } else {
             cout << "Enemy missed!" << endl;
         }
     }
-
-    void heal(float amount) override
-    {
-        Character::heal(amount);
-    }
-
-    void walk(float max_speed) override
-    {
-        Character::walk(max_speed);
-    }
 };
 
-class Boss : public Character
-{
+class Boss : public Character {
 public:
     Boss() : Character(150, 12, 20) {}
 
-    void attack(Character &target) override
-    {
+    void attack(Character &target) override {
         int chance = rand() % 100;
-        if (chance < 70)
-        {
+        if (chance < 70) {
             target.heal(-strength);
             cout << "Boss attacks! Target health: " << target.getHealth() << endl;
-        }
-        else
-        {
+        } else {
             cout << "Boss missed!" << endl;
         }
-    }
-
-    void heal(float amount) override
-    {
-        Character::heal(amount);
-    }
-
-    void walk(float max_speed) override
-    {
-        Character::walk(max_speed);
     }
 };
 
 class Item {
 protected:
-    array<int, 10> slot;
-    int sword;
-    int potion;
-    int bow;
-    int arrows;
-    int armor;
+    string name;
 public:
-    Item(array<int, 10> sl, int sw, int p, int b, int arr, int arm)
-    : slot(sl), sword(sw), potion(p), bow(b), arrows(arr), armor(arm) {}
+    Item(const string &n) : name(n) {}
+    virtual ~Item() = default;
+
+    virtual void use(Character &user, Character *target = nullptr) = 0;
+    string getName() const { return name; }
 };
 
+class Sword : public Item {
+    int damage;
+public:
+    Sword(int dmg) : Item("Sword"), damage(dmg) {}
 
-int main()
-{
+    void use(Character &user, Character *target = nullptr) override {
+        if (target) {
+            target->heal(-damage);
+            cout << "Hero deals " << damage 
+                 << " damage with sword! Target health: " 
+                 << target->getHealth() << " HP.\n";
+        }
+    }
+};
+
+class Potion : public Item {
+    int healAmount;
+public:
+    Potion(int h) : Item("Potion"), healAmount(h) {}
+
+    void use(Character &user, Character *target = nullptr) override {
+        user.heal(healAmount);
+        cout << "Hero drinks potion and restores " << healAmount 
+             << " HP! Current health: " << user.getHealth() << "\n";
+    }
+};
+
+class Bow : public Item {
+    int damage;
+    int arrows;
+public:
+    Bow(int dmg, int arr) : Item("Bow"), damage(dmg), arrows(arr) {}
+
+    void use(Character &user, Character *target = nullptr) override {
+        if (arrows > 0 && target) {
+            arrows--;
+            target->heal(-damage);
+            cout << "Hero shoots bow: " << damage 
+                 << " damage. Target health: " << target->getHealth() 
+                 << " HP. Arrows left: " << arrows << "\n";
+        } else {
+            cout << "No arrows left!\n";
+        }
+    }
+};
+
+class Inventory {
+    vector<shared_ptr<Item>> slots;
+public:
+    void addItem(shared_ptr<Item> item) {
+        slots.push_back(item);
+    }
+
+    void showInventory() const {
+        cout << "=== Inventory ===\n";
+        for (size_t i = 0; i < slots.size(); i++) {
+            cout << i+1 << ". " << slots[i]->getName() << "\n";
+        }
+    }
+
+    void useItem(int index, Character &user, Character *target = nullptr) {
+        if (index < 1 || index > (int)slots.size()) {
+            cout << "Invalid slot!\n";
+            return;
+        }
+        slots[index-1]->use(user, target);
+    }
+};
+
+int main() {
     srand(time(0));
 
     Hero hero;
     Enemy enemy;
     Boss boss;
 
-    cout << "Initial health:\n";
-    cout << "Hero: " << hero.getHealth() << "\n";
-    cout << "Enemy: " << enemy.getHealth() << "\n";
-    cout << "Boss: " << boss.getHealth() << "\n\n";
+    Inventory inv;
+    inv.addItem(make_shared<Sword>(25));
+    inv.addItem(make_shared<Potion>(30));
+    inv.addItem(make_shared<Bow>(15, 3));
 
-    hero.walk(20);
-    hero.attack(enemy);
-    hero.heal(20);
+    inv.showInventory();
 
-    cout << "\n";
-
-    enemy.walk(10);
-    enemy.attack(hero);
-    enemy.heal(10);
-
-    cout << "\n";
-
-    boss.walk(15);
-    boss.attack(hero);
-    boss.attack(enemy);
-    boss.heal(15);
-
-    cout << "\nFinal health:\n";
-    cout << "Hero: " << hero.getHealth() << "\n";
-    cout << "Enemy: " << enemy.getHealth() << "\n";
-    cout << "Boss: " << boss.getHealth() << "\n";
+    cout << "\n<-- Using items -->\n";
+    inv.useItem(1, hero, &enemy);
+    inv.useItem(2, hero);
+    inv.useItem(3, hero, &boss);
 
     return 0;
 }
