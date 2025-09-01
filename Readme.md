@@ -59,3 +59,98 @@ When `main()` is run:
 g++ main.cpp -o game
 ./game
 ```
+
+# 🐾 Virtual Animal Game (C++)
+
+This project is a simple console game in C++ where you can interact with a virtual animal.  
+The code demonstrates the basics of **OOP (Object-Oriented Programming)**, working with **structs, classes, methods, and vectors**.
+
+---
+
+## 📂 Code Structure
+
+### `struct Item`
+
+- Stores the food name and its "rate".
+- Used for the list of available food.
+
+```cpp
+struct Item {
+    string text;
+    double rate;
+};
+class Animal
+Main class that describes the animal.
+
+Fields:
+level — animal level (1–5).
+
+state — state (true/false).
+
+happiness — happiness points.
+
+sadness — sadness points.
+
+age — animal age.
+
+name — animal name.
+
+items — list of food (vector<Item>).
+
+Methods:
+food() — show available food.
+
+to_stroke() — pet the animal (+20 happiness).
+
+to_feed() — feed the animal:
+
+asks for food name and amount;
+
+increases happiness if the food exists.
+
+update() — updates the level depending on happiness.
+
+wash() — wash the animal (+15 happiness).
+
+class your_animal : public Animal
+Inherits from Animal.
+
+The constructor creates an animal "Dog" with initial values.
+
+int game_loop()
+Placeholder for the game loop (currently just returns 0).
+
+int main()
+Entry point of the program.
+
+Calls game_loop().
+
+🚀 How it works
+When a your_animal object is created, the food list is initialized.
+
+You can:
+
+View food list (food()).
+
+Pet the animal (to_stroke()).
+
+Feed it (to_feed()).
+
+Update the level (update()).
+
+Wash it (wash()).
+
+🔧 Possible Improvements
+Implement a real game loop inside game_loop().
+
+Add saving/loading of the animal state.
+
+Introduce different types of animals.
+
+Expand the mood system (happiness/sadness balance).
+
+🛠 Compilation and Run
+bash
+g++ main.cpp -o game
+./game
+```
