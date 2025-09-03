@@ -154,3 +154,134 @@ bash
 g++ main.cpp -o game
 ./game
 ```
+---
+
+# 📘 calculator in C++
+
+```cpp
+#include <iostream> // for input and output (cin, cout)
+#include <cmath> // for math functions: pow, sqrt
+
+using namespace std;
+
+int main() { 
+double first_num, second_num; 
+char op; 
+
+// Enter the first number 
+cout << "Write first number: "; 
+cin >> first_num; 
+
+// Operator input 
+cout << "Write operator (+, -, *, /, ^ for power, s for square root): "; 
+cin >> op; 
+
+// If the operation is not 's' (the root), then the second number is required 
+if (op != 's') { 
+cout << "Write second number: "; 
+cin >> second_num; 
+} 
+
+// Processing operations 
+switch (op) { 
+case '+': // addition 
+cout << "Result: " << first_num + second_num << endl; 
+break 
+
+case '-': // subtraction 
+cout << "Result: " << first_num - second_num << endl; 
+break 
+
+case '*': // multiplication 
+cout << "Result: " << first_num * second_num << endl; 
+break 
+
+case '/': // division 
+if (second_num == 0) { 
+cout << "Error: division by zero!" << endl; 
+} else { 
+cout << "Result: " << first_num / second_num << endl; 
+} 
+break 
+
+case '^': // exponentiation 
+cout << "Result: " << pow(first_num, second_num) << endl; 
+break 
+
+case 's': // square root 
+if (first_num < 0) { 
+cout << "Error: negative number under sqrt!" << endl; 
+} else { 
+cout << "Result: " << sqrt(first_num) << endl; 
+} 
+break 
+
+default: // unknown operator 
+cout << "Unknown operator!" << endl; 
+} 
+
+return 0;
+}
+```
+
+---
+
+## 🔍 Detailed explanation
+
+1. **Connecting libraries** 
+
+* `<iostream>` — for working with `cin` and `cout`. 
+* `<cmath>` — for mathematical functions (`pow' — exponentiation, `sqrt' — square root).
+
+2. **Variables** 
+
+* `double first_num, second_num;` → numbers (real numbers so that fractional values ​​can be entered). 
+* `char op;` → operator (`+`, `-`, `*`, `/`, `^`, `s`).
+
+3. **Data entry** 
+
+* First, the program asks to enter the first number. 
+* Then the operator. 
+* If the operator is not `s` (root), the program asks for the second number.
+
+4. **`switch` (selection operator)** 
+
+* The program selects an action based on the entered symbol. 
+* Supported: 
+
+* `+` → addition 
+* `-` → subtraction 
+* `*` → multiplication 
+* `/` → division (with division check by 0) 
+* `^` → exponentiation 
+* `s` → square root 
+* If an unknown character is entered, ``Unknown operator!'' is displayed.
+
+5. **Error handling** 
+
+* When dividing by 0, `"Error: division by zero!"' is displayed. 
+* When the root of a negative number → `"Error: negative number under sqrt!"`.
+
+---
+
+## 🖥️ An example of the program
+
+```
+Write first number: 9
+Write operator (+, -, *, /, ^ for power, s for square root): s
+Result: 3
+```
+
+```
+Write first number: 5
+Write operator (+, -, *, /, ^ for power, s for square root): *
+Write second number: 4
+Result: 20
+```
+
+```
+Write first number: 7
+Write operator (+, -, *, /, ^ for power, s for square root): /
+Write second number: 0
+Error: division by zero!
+```
