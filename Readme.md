@@ -285,3 +285,53 @@ Write operator (+, -, *, /, ^ for power, s for square root): /
 Write second number: 0
 Error: division by zero!
 ```
+
+````markdown
+# Binary Search Number Guessing
+
+This project is a simple example of implementing **binary search** in C++, where the computer tries to guess a number that the user has guessed (it is given in advance in the code).
+
+## 🔍 How the program works
+- The computer has a range from `1` to `1000`.
+- It calculates the middle (`(min + max) / 2`) and makes a guess.
+- If the guess:
+- greater than the target number → searches lower,
+- less than the target number → searches higher,
+- equal to the number → the program completes successfully.
+- The number of attempts is counted and displayed on the screen.
+
+## 📂 File structure
+- `algorithm.cpp` is the main file with the code.
+- `algorithm.exe` is the compiled executable file (Windows).
+
+## ▶️ Example of running
+```bash
+./algorithm.exe
+````
+
+The output in the terminal might look like this:
+
+```
+Computer guesses: 500
+Too high! Trying lower...
+Computer guesses: 250
+Too low! Trying higher...
+Computer guesses: 375
+Too low! Trying higher...
+Computer guesses: 437
+Too low! Trying higher...
+Computer guesses: 468
+Too high! Trying lower...
+Computer guesses: 452
+Too low! Trying higher...
+Computer guesses: 460
+Computer found the number 456 in 8 attempts!
+```
+
+## 🛠️ How to compile
+
+You can compile the code with the command (for g++):
+
+```bash
+g++ algorithm.cpp -o algorithm.exe
+```
