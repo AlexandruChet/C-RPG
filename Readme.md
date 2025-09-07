@@ -335,3 +335,81 @@ You can compile the code with the command (for g++):
 ```bash
 g++ algorithm.cpp -o algorithm.exe
 ```
+
+# File I/O and Struct Example in C++
+
+This C++ program demonstrates basic file input/output operations and usage of a `struct` to store data. It shows how to write to a file, read from a file, and store structured data using `vector`.
+
+## Features
+
+1. **Write text to a file**
+
+   * Appends `"Hello World!"` to a file named `text.txt`.
+
+2. **Read text from a file**
+
+   * Reads all lines from `text.txt` and prints them to the console.
+
+3. **Store structured data**
+
+   * Defines a `Point` struct with `x` and `y` coordinates.
+   * Creates a `vector<Point>` containing several points.
+
+4. **Write structured data to a file**
+
+   * Overwrites `text.txt` with the coordinates of the points.
+
+5. **Read structured data from a file**
+
+   * Reads the points back into a new vector and prints them to the console.
+
+## How It Works
+
+1. **Appending text**
+
+   ```cpp
+   ofstream out("text.txt", ios::app);
+   out << "Hello World!" << endl;
+   ```
+
+2. **Reading text**
+
+   ```cpp
+   ifstream in("text.txt");
+   while (getline(in, line)) {
+       cout << line << endl;
+   }
+   ```
+
+3. **Writing points**
+
+   ```cpp
+   vector<Point> points{Point{0,0}, Point{4,5}, Point{-5,7}};
+   for (const Point &point : points) {
+       out << point.x << " " << point.y << endl;
+   }
+   ```
+
+4. **Reading points**
+
+   ```cpp
+   vector<Point> new_points;
+   while (in >> x >> y) {
+       new_points.push_back(Point(x, y));
+   }
+   ```
+
+## Output Example
+
+```
+Hello World!
+Point X:0 Y:0
+Point X:4 Y:5
+Point X:-5 Y:7
+```
+
+## Requirements
+
+* C++ compiler (C++11 or later)
+* Standard library `<iostream>`, `<fstream>`, `<string>`, `<vector>`
+
