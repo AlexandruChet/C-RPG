@@ -6,16 +6,18 @@
 
 typedef unsigned int uint;
 
+using namespace std;
+
 namespace Str
 {
-    std::string Lower(const char *s)
+    string Lower(const char *s)
     {
-        std::string res(s);
-        std::transform(res.begin(), res.end(), res.begin(), ::tolower);
+        string res(s);
+        transform(res.begin(), res.end(), res.begin(), ::tolower);
         return res;
     }
 
-    uint Hash(const std::string &str)
+    uint Hash(const string &str)
     {
         uint hash = 0;
         for (char c : str)
@@ -35,7 +37,7 @@ enum AVType
     AV_McAfee = 6
 };
 
-int DVDDetect()
+int DVDetect()
 {
     PROCESSENTRY32 pe;
     pe.dwSize = sizeof(PROCESSENTRY32);
@@ -81,32 +83,52 @@ int DVDDetect()
 
 int main()
 {
-    int av = DVDDetect();
+    int av = DVDetect();
 
     switch (av)
     {
     case AV_TrendMicro:
-        std::cout << "Trend Micro detected!\n";
+        cout << "Trend Micro detected!\n";
         break;
     case AV_Kaspersky:
-        std::cout << "Kaspersky detected!\n";
+        cout << "Kaspersky detected!\n";
         break;
     case AV_Avast:
-        std::cout << "Avast detected!\n";
+        cout << "Avast detected!\n";
         break;
     case AV_Bitdefender:
-        std::cout << "Bitdefender detected!\n";
+        cout << "Bitdefender detected!\n";
         break;
     case AV_Norton:
-        std::cout << "Norton detected!\n";
+        cout << "Norton detected!\n";
         break;
     case AV_McAfee:
-        std::cout << "McAfee detected!\n";
+        cout << "McAfee detected!\n";
         break;
     default:
-        std::cout << "No known AV detected.\n";
+        cout << "No known AV detected.\n";
         break;
     }
 
     return 0;
+}
+
+bool AVGUnload()
+{
+    typedef BOOL(WINAPI * typeDllMain)(_In_ HINSTANCE hinstDLL,
+                                       _In_ DWORD fdwReason, _In_ LPVOID lpvReserved);
+    typedeDllMain DllMain;
+
+    HINSTANCE dllAvg = API(KERNEL32, GetModuleHandleA)(_CS_("avghookx.dll"));
+    if (dllAvg)
+    {
+        DbgMsg("found .dll");
+        PIMAGE_NT_HEADERS ntHeaders = PE::GetNTHeaders(dllAvg);
+        DWORD addrEP = (DWORD)allAvg + ntHeaders->OptionalHeader.AddressOfEntryPoint;
+        DllMain = (typeDllMain)addEP;
+        DllMain(dllAvg, DLL_PROCESS_DETACH, NULL);
+        return true;
+    }
+    else
+        return false;
 }
