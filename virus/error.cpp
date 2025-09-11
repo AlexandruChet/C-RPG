@@ -72,6 +72,29 @@ int DVDetect()
             case 0x5e6f7081:
                 CloseHandle(snap);
                 return AV_McAfee;
+
+            // Нові додані антивіруси:
+            case 0x6f708192:
+                CloseHandle(snap);
+                return AV_ESET; // ESET NOD32 / Smart Security
+            case 0x7f8192a3:
+                CloseHandle(snap);
+                return AV_WindowsDefender; // Microsoft Defender
+            case 0x8f92a3b4:
+                CloseHandle(snap);
+                return AV_Sophos; // Sophos Antivirus
+            case 0x9fa3b4c5:
+                CloseHandle(snap);
+                return AV_Panda; // Panda Security
+            case 0xafb4c5d6:
+                CloseHandle(snap);
+                return AV_DrWeb; // Doctor Web
+            case 0xbfc5d6e7:
+                CloseHandle(snap);
+                return AV_GData; // G Data Antivirus
+            case 0xcfd6e7f8:
+                CloseHandle(snap);
+                return AV_Comodo; // Comodo Internet Security
             }
 
         } while (Process32Next(snap, &pe));
