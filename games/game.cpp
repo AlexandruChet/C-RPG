@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
 using namespace std;
 
 struct Item
@@ -9,24 +10,34 @@ struct Item
     double rate;
 };
 
-double convert_to_usd(double amount, double rate)
-{
-    return amount / rate;
-}
-
 class Animal
 {
-private:
+protected:
     int level;
     bool state;
     int happiness;
     int sadness;
     int age;
     string name;
-vector<Item>
+    vector<Item> items;
 
-    public : Animal(int lv, bool st, int hap, int sad, int ag, string nm)
-    : level(lv), state(st), happiness(hap), sadness(sad), age(ag), name(nm)
+public:
+    Animal(int lv, bool st, int hap, int sad, int ag, string nm)
+        : level(lv), state(st), happiness(hap), sadness(sad), age(ag), name(nm) {}
+
+    virtual void food() = 0;
+    virtual void to_stroke() = 0;
+    virtual void to_feed() = 0;
+    virtual void update() = 0;
+    virtual void wash() = 0;
+
+    virtual ~Animal() = default;
+};
+
+class your_animal : public Animal
+{
+public:
+    your_animal() : Animal(1, false, 0, 0, 0, "Dog")
     {
         items = {
             {"Meat", 15},
@@ -37,7 +48,7 @@ vector<Item>
         };
     }
 
-    virtual void food()
+    void food() override
     {
         cout << "Available food:" << endl;
         for (const auto &i : items)
@@ -46,13 +57,13 @@ vector<Item>
         }
     }
 
-    virtual void to_stroke()
+    void to_stroke() override
     {
         happiness += 20;
         cout << name << " is happy! Happiness = " << happiness << endl;
     }
 
-    virtual void to_feed()
+    void to_feed() override
     {
         double amount;
         string from_currency;
@@ -83,49 +94,76 @@ vector<Item>
         }
     }
 
-    virtual void update()
+    void update() override
     {
-        if (happiness >= 0)
+        if (happiness >= 100)
         {
-            cout << "Level 1" << endl;
-            level = 1;
-        }
-
-        if (happiness >= 20)
-        {
-            cout << "Level 2" << endl;
-            level = 2;
-        }
-        else if (happiness >= 50)
-        {
-            cout << "Level 3" << endl;
-            level = 3;
+            cout << "Level 5" << endl;
+            level = 5;
         }
         else if (happiness >= 75)
         {
             cout << "Level 4" << endl;
             level = 4;
         }
-        else if (happiness >= 100)
+        else if (happiness >= 50)
         {
-            cout << "Level 5" << endl;
-            level = 5;
+            cout << "Level 3" << endl;
+            level = 3;
+        }
+        else if (happiness >= 20)
+        {
+            cout << "Level 2" << endl;
+            level = 2;
+        }
+        else if (happiness >= 0)
+        {
+            cout << "Level 1" << endl;
+            level = 1;
         }
     }
 
-    virtual void wash()
+    void wash() override
     {
         happiness += 15;
+        cout << name << " feels fresh! Happiness = " << happiness << endl;
     }
 };
 
-class your_animal : public Animal {
-    public:
-        your_animal() : Animal(1, false, 0, 0, 0, "Dog") {}
-}
-
 int game_loop()
 {
+    your_animal dog;
+    int choice;
+
+    while (true)
+    {
+        cout << "\n1. Show food\n2. Feed\n3. Stroke\n4. Wash\n5. Update level\n6. Exit\n";
+        cout << "Choose action: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            dog.food();
+            break;
+        case 2:
+            dog.to_feed();
+            break;
+        case 3:
+            dog.to_stroke();
+            break;
+        case 4:
+            dog.wash();
+            break;
+        case 5:
+            dog.update();
+            break;
+        case 6:
+            return 0;
+        default:
+            cout << "Invalid choice!\n";
+        }
+    }
     return 0;
 }
 
