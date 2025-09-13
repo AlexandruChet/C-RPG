@@ -3,6 +3,7 @@
 #include <vector>
 
 using namespace std;
+typedef unsigned int uint;
 
 struct Item
 {
@@ -13,16 +14,16 @@ struct Item
 class Animal
 {
 protected:
-    int level;
+    uint level;
     bool state;
-    int happiness;
-    int sadness;
-    int age;
+    uint happiness;
+    uint sadness;
+    uint age;
     string name;
     vector<Item> items;
 
 public:
-    Animal(int lv, bool st, int hap, int sad, int ag, string nm)
+    Animal(uint lv, bool st, uint hap, uint sad, uint ag, string nm)
         : level(lv), state(st), happiness(hap), sadness(sad), age(ag), name(nm) {}
 
     virtual void food() = 0;
@@ -30,6 +31,7 @@ public:
     virtual void to_feed() = 0;
     virtual void update() = 0;
     virtual void wash() = 0;
+    virtual void check() = 0;
 
     virtual ~Animal() = default;
 };
@@ -79,7 +81,7 @@ public:
             if (i.text == from_currency)
             {
                 from_rate = i.rate;
-                happiness += amount;
+                happiness += amount * from_rate;
                 break;
             }
         }
@@ -90,7 +92,9 @@ public:
         }
         else
         {
-            cout << name << " ate " << from_currency << " and got +" << amount << " happiness." << endl;
+            cout << name << " ate " << from_currency
+                 << " and got +" << (amount * from_rate)
+                 << " happiness." << endl;
         }
     }
 
@@ -116,7 +120,7 @@ public:
             cout << "Level 2" << endl;
             level = 2;
         }
-        else if (happiness >= 0)
+        else
         {
             cout << "Level 1" << endl;
             level = 1;
@@ -128,16 +132,40 @@ public:
         happiness += 15;
         cout << name << " feels fresh! Happiness = " << happiness << endl;
     }
+
+    void check() override
+    {
+        string state_animal;
+        if (happiness < 20)
+        {
+            state_animal = "The animal is very sad.";
+        }
+        else if (happiness < 50)
+        {
+            state_animal = "So far everything is fine.";
+        }
+        else if (happiness < 75)
+        {
+            state_animal = "She is cheerful.";
+        }
+        else
+        {
+            state_animal = "Everything is fine.";
+        }
+
+        cout << "Your pet has happiness = " << happiness
+             << ". " << state_animal << endl;
+    }
 };
 
 int game_loop()
 {
     your_animal dog;
-    int choice;
+    uint choice;
 
     while (true)
     {
-        cout << "\n1. Show food\n2. Feed\n3. Stroke\n4. Wash\n5. Update level\n6. Exit\n";
+        cout << "\n1. Show food\n2. Feed\n3. Stroke\n4. Wash\n5. Update level\n6. Check state\n7. Exit\n";
         cout << "Choose action: ";
         cin >> choice;
 
@@ -159,6 +187,9 @@ int game_loop()
             dog.update();
             break;
         case 6:
+            dog.check();
+            break;
+        case 7:
             return 0;
         default:
             cout << "Invalid choice!\n";
