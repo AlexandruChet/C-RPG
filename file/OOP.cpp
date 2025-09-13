@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <functional>
 
 using namespace std;
 
@@ -42,5 +43,45 @@ public:
     Obj(uint hea, string n, uint sp, float hei, float w, uint str)
         : health(hea), name(n), speed(sp), height(hei), weight(w), strength(str) {}
 
+    virtual void attack() = 0;
+    virtual void walking() = 0;
+    virtual void recovery() = 0;
+    virtual void strong() = 0;
+    virtual string getName() = 0;
+
     virtual ~Obj() {}
+};
+
+class registration
+{
+protected:
+    uint password;
+    string name;
+
+    void cipher()
+    {
+        hash<string> hasher;
+        size_t hashed = hasher(to_string(password));
+        cout << "Your password hash: " << hashed << endl;
+    }
+
+public:
+    registration(uint p, string n) : password(p), name(n) {}
+
+    virtual string getName() { return name; }
+
+    virtual ~registration() {}
+};
+
+class reg : public registration
+{
+public:
+    reg(uint p, string n) : registration(p, n) {}
+
+    void getName() override
+    {
+        cout << "Write your Password: ";
+        cin >> password;
+        cipher();
+    }
 };
