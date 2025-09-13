@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <chrono>
+#include <thread>
 
 using namespace std;
 typedef unsigned int uint;
@@ -32,6 +34,7 @@ public:
     virtual void update() = 0;
     virtual void wash() = 0;
     virtual void check() = 0;
+    virtual void time() = 0;
 
     virtual ~Animal() = default;
 };
@@ -155,6 +158,17 @@ public:
 
         cout << "Your pet has happiness = " << happiness
              << ". " << state_animal << endl;
+    }
+
+    void time() override
+    {
+        thread([this]()
+               {
+        while (happiness > 0) {
+            this_thread::sleep_for(chrono::seconds(30));
+            happiness--;
+        } })
+            .detach();
     }
 };
 
