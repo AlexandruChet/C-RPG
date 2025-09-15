@@ -1,9 +1,9 @@
 #include <iostream>
 #include <array>
-#include <string>
+#include <string> // i include bibliotecs
 
 using namespace std;
-using Board = array<char, 9>;
+using Board = array<char, 9>; // i use using
 
 void printBoard(const Board &board)
 {
