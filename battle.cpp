@@ -7,14 +7,15 @@
 
 using namespace std;
 
-class Character // main class
+class Character // this is main class
 {
 protected:
     float strength;
     float speed;
     string name;
     float health;
-    float defenseValue; // renamed to avoid conflict
+    float defenseValue;
+    bool dodging = false;
 
 public:
     Character(float str, float sp, string n, float heal, float def)
@@ -23,15 +24,18 @@ public:
     virtual void attack(Character &target) = 0;
     virtual void defense() = 0;
     virtual void recovery() = 0;
-    virtual void miss() = 0;
+    virtual bool miss() = 0;
     virtual void random(Character &target) = 0; // my main virtual func.
 
     void takeDamage(float dmg) { health -= dmg; }
     void addDefense(float value) { defenseValue += value; }
     void addStrength(float value) { strength += value; }
-    void heal(float value) { health += value; } // help to main functions
+    void heal(float value) { health += value; } // this is help to main functions
 
     float getHealth() const { return health; } // this is getter for health
+
+    void setDodging(bool value) { dodging = value; }
+    bool isDodging() const { return dodging; } // this is for miss
 };
 
 class Hero : public Character
@@ -42,13 +46,25 @@ private:
 public:
     Hero() : Character(50, 100, "Hero", 100, 30), mana(100) {} // constructor
 
-    void attack(Character &target) override
+    void attack(Character &target) override // attack func Hero
     {
-        int r = rand() % 100; // random %
-        if (r == 80)
-            target.takeDamage(strength);
-        else
-            target.takeDamage(strength * 1.5); // attack func
+        if (target.isDodging())
+        {
+            cout << "Hero attacks, but enemy dodges!\n";
+            target.setDodging(false);
+            return;
+        }
+
+        if (miss())
+        {
+            cout << "Hero missed!\n";
+            mana -= 10;
+            return;
+        }
+
+        float dmg = (rand() % 100 < 80) ? strength : strength * 1.5;
+        target.takeDamage(dmg);
+        cout << "Hero deals " << dmg << " damage!\n";
     }
 
     void defense() override // defense func
@@ -61,9 +77,21 @@ public:
         heal(30);
     }
 
-    void miss() override
+    bool miss() override
     {
-        // I ll make that then
+        return (rand() % 100) >= 80;
+    }
+
+    void useMiss() // useMiss Dodging func
+    {
+        if (mana < 20)
+        {
+            cout << "Not enough mana to dodge!\n";
+            return;
+        }
+        mana -= 10;
+        dodging = true; // dodge func
+        cout << "Hero prepares to dodge! (Mana: " << mana << ")\n";
     }
 
     void random(Character &target) override // random func
@@ -72,7 +100,7 @@ public:
         int index = rand() % perks.size();
         string perk = perks[index];
 
-        if (perk == "Defense") // verification
+        if (perk == "Defense") // verification my enemy logic
             target.addDefense(100);
         else if (perk == "Attack")
             target.addStrength(50);
@@ -91,18 +119,39 @@ private:
     int mana;
 
 public:
-    Enemy() : Character(35, 60, "Enemy", 300, 10), mana(50) {} // constructor
+    Enemy() : Character(35, 60, "Enemy", 300, 10), mana(50) {} // Enemys constructor
 
-    void attack(Character &target) override
+    void attack(Character &target) override // Enemys attack func
     {
-        int r = rand() % 100;
-        if (r == 80)
-            target.takeDamage(strength);
-        else
-            target.takeDamage(strength * 1.1);
+        if (target.isDodging())
+        {
+            cout << "Enemy attacks, but hero dodges!\n";
+            target.setDodging(false);
+            return;
+        }
+
+        if (miss())
+        {
+            cout << "Enemy missed!\n";
+            return;
+        }
+
+        float dmg = (rand() % 100 < 80) ? strength : strength * 1.1;
+        target.takeDamage(dmg);
+        cout << "Enemy deals " << dmg << " damage!\n";
     }
 
-    void defense() override
+    void useMiss()
+    {
+        if (mana < 10)
+            return;
+        mana -= 10;
+        dodging = true;
+        cout << "Enemy prepares to dodge!\n";
+    }
+
+    void
+    defense() override
     {
         addDefense(10);
     }
@@ -112,9 +161,9 @@ public:
         heal(15);
     }
 
-    void miss() override
+    bool miss() override
     {
-        // I'll finish it later.
+        return (rand() % 100) >= 80;
     }
 
     void random(Character &target) override
@@ -151,7 +200,7 @@ public:
 
 void game_play()
 {
-    srand(static_cast<unsigned int>(time(0))); // random seed
+    srand(static_cast<unsigned int>(time(0)));
     Hero hero;
     Enemy enemy;
 
@@ -226,7 +275,7 @@ void game_play()
         }
         else if (command == 'D')
         {
-            hero.miss();
+            hero.useMiss();
             cout << "＜￣｀ヽ、　　　　　　　／￣＞\n";
             cout << "　ゝ、　　＼　／⌒ヽ,ノ 　/´\n";
             cout << "　　　ゝ、　`（ ( ͡° ͜ʖ ͡°) ／\n";
