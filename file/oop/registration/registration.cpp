@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <functional>
+#include <windows.h>
 
 using namespace std;
 
@@ -22,6 +23,8 @@ public:
     virtual void cypherName() = 0;
     virtual void cypherPassword() = 0;
     virtual void cypherLogin() = 0;
+
+    virtual void verification() = 0;
 };
 
 class Reg : public Functional
@@ -74,14 +77,29 @@ public:
         size_t hashed = hasher(to_string(login));
         cout << "Your login hash: " << hashed << endl;
     }
+
+    void verification() override
+    {
+        if (name == "Alex" || password == 123 || login == 123)
+        {
+            cout << "✅ Verification successful! Welcome, " << name << endl;
+        }
+        else
+        {
+            cout << "❌ Verification failed! Access denied." << endl;
+        }
+    }
 };
 
 int main()
 {
+    SetConsoleOutputCP(CP_UTF8);
+
     Reg user("Default", 1234, 5678);
     user.getName();
     user.getPassword();
     user.getLogin();
+    user.verification();
 
     return 0;
 }
