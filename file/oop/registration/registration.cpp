@@ -25,6 +25,9 @@ public:
     virtual void cypherLogin() = 0;
 
     virtual void verification() = 0;
+    virtual void deconstructor() = 0;
+
+    virtual ~Functional() { cout << "Functional destroyed" << endl; }
 };
 
 class Reg : public Functional
@@ -88,6 +91,11 @@ public:
         {
             cout << "❌ Verification failed! Access denied." << endl;
         }
+    }
+
+    ~Reg() override
+    {
+        cout << "Reg destroyed" << endl;
     }
 };
 
