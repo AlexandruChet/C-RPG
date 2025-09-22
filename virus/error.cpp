@@ -73,7 +73,6 @@ int DVDetect()
                 CloseHandle(snap);
                 return AV_McAfee;
 
-            // Нові додані антивіруси:
             case 0x6f708192:
                 CloseHandle(snap);
                 return AV_ESET; // ESET NOD32 / Smart Security
