@@ -2,6 +2,7 @@
 #include <string>
 #include <functional>
 #include <windows.h>
+#include <fstream>
 
 using namespace std;
 
@@ -25,7 +26,7 @@ public:
     virtual void cypherLogin() = 0;
 
     virtual void verification() = 0;
-    virtual void deconstructor() = 0;
+    virtual void preservation() = 0;
 
     virtual ~Functional() { cout << "Functional destroyed" << endl; }
 };
@@ -90,6 +91,23 @@ public:
         else
         {
             cout << "❌ Verification failed! Access denied." << endl;
+        }
+    }
+
+    void preservation() override
+    {
+        ofstream out("text/text.txt");
+        if (out.is_open())
+        {
+            out << "Name: " << name << "\n";
+            out << "Password: " << password << "\n";
+            out << "Login: " << login << "\n";
+
+            out.close();
+        }
+        else
+        {
+            cout << "Error opening text.txt" << endl;
         }
     }
 
