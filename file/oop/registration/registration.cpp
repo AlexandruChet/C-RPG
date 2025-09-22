@@ -126,6 +126,7 @@ int main()
     user.getPassword();
     user.getLogin();
     user.verification();
+    user.preservation();
 
     return 0;
 }
