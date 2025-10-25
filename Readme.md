@@ -1,51 +1,63 @@
-# 🎯 My C++ Learning Journey
+<h1 align="center">🎯 My C++ Learning Journey</h1>
 
-This repository is created for my learning of **C++**, one of the most powerful programming languages.
-This is where I keep all my projects, code examples, exercises, and experiments, divided by topic.
-
----
-
-## 📂 Repository structure
-There are many folders inside, and each of them is dedicated to a separate topic or concept of C++:
-- **basics/** — variables, data types, operators, input/output
-- **conditions/** — `if`, `else`, `switch` operators
-- **loops/** — `for`, `while`, `do...while` loops
-- **arrays/** — one-dimensional and multidimensional arrays
-- **functions/** — creating and calling functions
-- **pointers/** — pointers, addresses, dereferencing
-- **strings/** — working with strings (`std::string`, character arrays)
-- **structures/** — structures, `typedef`, nested structures
-- **OOP/** — object-oriented programming: classes, constructors, inheritance
-- **files/** — working with files (`fstream`, reading/writing data)
-- **projects/** — small programs that combine several topics
+<p align="center"> 
+<em>This repository documents my progress in learning <b>C++</b> — one of the most powerful and versatile programming languages.</em><br> 
+💻 Here I keep my <b>projects</b>, <b>examples</b>, <b>exercises</b>, and <b>experiments</b>, neatly organized by topic.
+</p>
 
 ---
 
-## 💡 Goal
-- Master **all basic and advanced C++ concepts**
-- Learn **to read and write efficient code**
-- Understand how **memory, pointers, classes, and objects** work
-- Create your own **mini-projects** for practice
+## 📂 Repository Structure
+
+Each folder in this repository covers a specific topic or concept of C++:
+
+| Folder             | Description                                                     |
+| :----------------- | :-------------------------------------------------------------- |
+| 🧮 **basics/**     | Variables, data types, operators, input/output                  |
+| 🔀 **conditions/** | `if`, `else`, `switch` statements                               |
+| 🔁 **loops/**      | `for`, `while`, `do...while` loops                              |
+| 📦 **arrays/**     | One-dimensional & multidimensional arrays                       |
+| ⚙️ **functions/**  | Creating and calling functions                                  |
+| 🧭 **pointers/**   | Pointers, addresses, dereferencing                              |
+| 🔤 **strings/**    | Working with `std::string` and char arrays                      |
+| 🧱 **structures/** | Structures, `typedef`, nested structures                        |
+| 🧩 **OOP/**        | Object-oriented programming: classes, constructors, inheritance |
+| 📂 **files/**      | File handling using `fstream` (read/write)                      |
+| 🚀 **projects/**   | Mini-programs combining multiple topics                         |
 
 ---
 
-## 🧠 Tools used
-- **Compiler:** g++
-- **IDE:** Visual Studio Code
-- **OS:** Windows 10
-- **Console encoding:** UTF-8 (`SetConsoleOutputCP(CP_UTF8)`)
+## 💡 Goals
+
+- 🧠 Master **all basic and advanced C++ concepts**
+- ✍️ Learn to **write clean, efficient, and readable code**
+- 🔍 Understand how **memory, pointers, classes, and objects** work
+- 🧩 Build my own **mini-projects** to apply knowledge in practice
 
 ---
 
-## 🚀 How to run the code
-1. Open the desired folder with the topic
+## 🧰 Tools & Environment
+
+| Tool                    | Description                           |
+| :---------------------- | :------------------------------------ |
+| 🧱 **Compiler**         | `g++`                                 |
+| 💼 **IDE**              | Visual Studio Code                    |
+| 💻 **OS**               | Windows 10                            |
+| 🌐 **Console Encoding** | UTF-8 (`SetConsoleOutputCP(CP_UTF8)`) |
+
+---
+
+## 🚀 How to Run Code
+
+1. Open the folder with the desired topic
 2. Open the `.cpp` file
-3. Compile in the terminal:
+3. Compile it in the terminal:
+
 ```bash
 g++ -o program.exe file.cpp
-````
+```
 
-4. Run:
+4. Run the program:
 
 ```bash
 ./program.exe
@@ -53,11 +65,11 @@ g++ -o program.exe file.cpp
 
 ---
 
-## 🧩 Author
+## 👨‍💻 Author
 
-👤 **[AlexandruChet]**
-💬 I'm learning to program in C++ to better understand how a computer works and become a professional developer.
+**AlexandruChet**
+💬 Learning C++ to deeply understand how computers work and to grow into a professional developer.
 
----
-
-📘 *“Practice makes perfect — every line of code brings me closer to my goal!”*
+<p align="center"> 
+<i>“Practice makes perfect — every line of code brings me closer to my goal.”</i> ✨
+</p>
