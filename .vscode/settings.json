@@ -6,6 +6,7 @@
     "optional": "cpp",
     "iostream": "cpp",
     "ctime": "cpp",
-    "iosfwd": "cpp"
+    "iosfwd": "cpp",
+    "vector": "cpp"
   }
 }
