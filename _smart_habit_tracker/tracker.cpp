@@ -1,113 +1,140 @@
 #include <iostream>
-#include <string>
 #include <vector>
+#include <string>
 #include <algorithm>
+#include <windows.h>
 
 using namespace std;
 
+struct HabitItem
+{
+    string name;
+    vector<bool> history;
+};
+
 class Habit
 {
-protected:
-    vector<string> habit;
-    vector<string> time;
-
 public:
-    Habit(vector<string> hab, vector<string> tm) : habit(hab), time(tm) {}
-
     virtual void add_new_habit() = 0;
-    virtual void break_habit() = 0;
+    virtual void remove_habit() = 0;
     virtual void edit_habit() = 0;
-    virtual void view_list_of_all_habits() = 0;
-
+    virtual void mark_habit() = 0;
+    virtual void view_all() = 0;
     virtual ~Habit() {}
 };
 
 class smart_habit : public Habit
 {
-public:
-    smart_habit(vector<string> habit, vector<string> time)
-        : Habit(habit, time) {}
+private:
+    vector<HabitItem> habits;
 
+public:
     void add_new_habit() override
     {
-        string hab;
-        cout << "Please write your habit: ";
-        cin >> hab;
-        habit.push_back(hab);
+        HabitItem h;
+        cout << "Enter habit name: ";
+        cin >> h.name;
 
-        string time_hab;
-        cout << "How much time did you spend today? ";
-        cin >> time_hab;
-        time.push_back(time_hab);
+        h.history = vector<bool>(7, false);
+
+        habits.push_back(h);
+
+        cout << "Habit added!\n";
     }
 
-    void break_habit() override
+    void remove_habit() override
     {
-        cout << "Your habits: ";
-        for (const auto &e : habit)
-            cout << e << " ";
-        cout << endl;
+        cout << "Enter habit name to remove: ";
+        string target;
+        cin >> target;
 
-        cout << "Which habit do you want to remove? ";
-        string answer;
-        cin >> answer;
+        auto it = remove_if(habits.begin(), habits.end(),
+                            [&](const HabitItem &h)
+                            { return h.name == target; });
 
-        auto it = find(habit.begin(), habit.end(), answer);
-        if (it != habit.end())
+        if (it != habits.end())
         {
-            habit.erase(it);
-            cout << "Habit '" << answer << "' deleted.\n";
+            habits.erase(it, habits.end());
+            cout << "Removed.\n";
         }
         else
-        {
-            cout << "Habit '" << answer << "' not found.\n";
-        }
+            cout << "Not found.\n";
     }
 
     void edit_habit() override
     {
-        cout << "Your habits: ";
-        for (const auto &e : habit)
-            cout << e << " ";
-        cout << endl;
+        cout << "Which habit to edit? ";
+        string oldName;
+        cin >> oldName;
 
-        string oldWord, newWord;
+        auto it = find_if(habits.begin(), habits.end(),
+                          [&](const HabitItem &h)
+                          { return h.name == oldName; });
 
-        cout << "Which habit do you want to edit? ";
-        cin >> oldWord;
-        cout << "Write the new habit: ";
-        cin >> newWord;
-
-        auto it = find(habit.begin(), habit.end(), oldWord);
-
-        if (it != habit.end())
+        if (it == habits.end())
         {
-            *it = newWord;
-            cout << "Habit updated.\n";
+            cout << "Not found.\n";
+            return;
         }
-        else
-        {
-            cout << "Habit not found.\n";
-        }
+
+        cout << "Enter new name: ";
+        cin >> it->name;
+        cout << "Updated!\n";
     }
 
-    void view_list_of_all_habits() override
+    void mark_habit() override
     {
-        cout << "\nHABITS:\n";
-        for (const auto &e : habit)
-            cout << e << " ";
-        cout << "\nTIME:\n";
-        for (const auto &e : time)
-            cout << e << " ";
-        cout << endl;
+        cout << "Which habit to mark? ";
+        string name;
+        cin >> name;
+
+        auto it = find_if(habits.begin(), habits.end(),
+                          [&](const HabitItem &h)
+                          { return h.name == name; });
+
+        if (it == habits.end())
+        {
+            cout << "Not found.\n";
+            return;
+        }
+
+        cout << "Was it done today? (1=yes, 0=no): ";
+        bool done;
+        cin >> done;
+
+        it->history.insert(it->history.begin(), done);
+
+        if (it->history.size() > 7)
+            it->history.pop_back();
+
+        cout << "Marked!\n";
+    }
+
+    void view_all() override
+    {
+        cout << "\n========== HABITS ==========\n";
+
+        for (const auto &h : habits)
+        {
+            cout << "Habit: " << h.name << "\nHistory: ";
+
+            for (bool d : h.history)
+                cout << (d ? "✔ " : "✖ ");
+
+            cout << "\n--------------------------\n";
+        }
     }
 };
 
 int main()
 {
-    smart_habit app({}, {});
+    SetConsoleOutputCP(CP_UTF8);
+
+    smart_habit app;
+
     app.add_new_habit();
-    app.view_list_of_all_habits();
+    app.mark_habit();
+    app.view_all();
 
     return 0;
 }
