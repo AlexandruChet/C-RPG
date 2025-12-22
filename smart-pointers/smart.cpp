@@ -15,7 +15,7 @@ class linklist
 {
 private:
     unique_ptr<link> first;
-    link* last;
+    link *last;
 
 public:
     linklist() : first(nullptr), last(nullptr) {}
@@ -68,7 +68,7 @@ public:
             last = nullptr;
             return;
         }
-        link* tmp = first.get();
+        link *tmp = first.get();
         while (tmp->next.get() != last)
         {
             tmp = tmp->next.get();
@@ -83,7 +83,7 @@ public:
         {
             throw out_of_range("List is empty");
         }
-        link* tmp = first.get();
+        link *tmp = first.get();
         uint count = 0;
         while (tmp != nullptr && count < index)
         {
@@ -99,7 +99,7 @@ public:
 
     void display()
     {
-        link* tmp = first.get();
+        link *tmp = first.get();
         while (tmp != nullptr)
         {
             cout << tmp->val << "\n";
