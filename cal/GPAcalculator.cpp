@@ -11,11 +11,10 @@ int main()
     cout << "Write how many grades you have: ";
     cin >> number_of_assessments;
 
-    if (number_of_assessments <= 0)
-    {
-        cout << "Number of grades must be greater than 0." << endl;
-        return 0;
-    }
+    if (grade < 1 || grade > 6)
+        cout << "Invalid input. Please enter a number from 1 to 6.\n";
+
+    int count[6] = {0};
 
     for (int i = 0; i < number_of_assessments; i++)
     {
@@ -25,6 +24,13 @@ int main()
             cin >> grade;
         } while (grade < 1 || grade > 6);
         sum += grade;
+        count[(int)grade - 1]++;
+    }
+
+    cout << "\nGrade statistics:\n";
+    for (int i = 0; i < 6; i++)
+    {
+        cout << "Grade " << i + 1 << ": " << count[i] << " times\n";
     }
 
     double avg = sum / number_of_assessments;
